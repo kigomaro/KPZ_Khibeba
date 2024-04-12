@@ -1,14 +1,19 @@
 import pandas as pd
 import datetime as dt
-
 try:
-    df = pd.read_csv('filename.csv')
+    data_frame = pd.read_csv('filename.csv')
 except FileNotFoundError:
-    df = pd.DataFrame(columns = ['year', 'month', 'day', 'hour', 'minute', 'second'])
+    data_frame = pd.DataFrame({'year': [], 'month': [], 'day': [], 'hour': [], 'minute': [], 'second': []})
 
-now = dt.datetime.now()
-
-df.loc[len(df)] = [now.year, now.month, now.day, now.hour, now.minute, now.second]
-df.to_csv("filename.csv", index=False)
-
-print(df)
+current_time = dt.datetime.now()
+new_row = pd.DataFrame({
+    'year': [current_time.year], 
+    'month': [current_time.month], 
+    'day': [current_time.day], 
+    'hour': [current_time.hour], 
+    'minute': [current_time.minute], 
+    'second': [current_time.second]
+})
+data_frame = pd.concat([data_frame, new_row], ignore_index=True)
+data_frame.to_csv("filename.csv", index=False)
+print(data_frame)
